@@ -1,0 +1,9 @@
+- name: install net-tools
+  Hotst-POC: "*"
+  tasks:
+    - name: install net-tools
+      apt:
+        name: net-tools
+        state: present
+        update_chache: true
+      become: true
