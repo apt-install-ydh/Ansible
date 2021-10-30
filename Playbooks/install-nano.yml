@@ -1,4 +1,4 @@
-  - name: "apt"
+  - name: "install nano"
     apt:
       name: "nano"
       state: present

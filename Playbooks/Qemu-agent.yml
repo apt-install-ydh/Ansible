@@ -1,4 +1,4 @@
-  - name: "apt"
+  - name: "Qemu quest agent"
     apt:
       name: "qemu-guest-agent"
       state: present
