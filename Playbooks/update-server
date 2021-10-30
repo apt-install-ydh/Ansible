@@ -1,4 +1,4 @@
-- Host-POC: "*"
+- hosts: "*"
   become: yes
   tasks:
     - name: apt

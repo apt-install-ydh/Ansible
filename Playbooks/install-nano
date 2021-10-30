@@ -1,5 +1,5 @@
   - name: "apt"
     apt:
-      name: "net-tools"
+      name: "nano"
       state: present
       update_cache: true
