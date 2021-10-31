@@ -1,5 +1,9 @@
 - hosts: "*"
   become: yes
   tasks:
-   - include_tasks: install-nano.yml
-   - include_tasks: Configer-ufw.yml
+   - include_tasks: ./Sub-playbooks/Update-server.yml
+   - include_tasks: ./Sub-playbooks/Install-nano.yml
+   - include_tasks: ./Sub-playbooks/Install-Qemu-agent.yml
+   - include_tasks: ./Sub-playbooks/Install-net-tools.yml
+   - include_tasks: ./Sub-playbooks/Configer-ufw.yml
+   - include_tasks: ./Sub-playbooks/Reboot.yml

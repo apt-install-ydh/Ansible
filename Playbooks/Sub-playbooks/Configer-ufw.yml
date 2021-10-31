@@ -1,23 +1,23 @@
   - name: limit ssh
-    community.general.ufw:
+    ufw:
       rule: limit
       port: ssh
       proto: tcp
 
   - name: deny incoming
-    community.general.ufw:
+    ufw:
       default: deny
       direction: incoming
 
   - name: allow outgoing
-    community.general.ufw:
+    ufw:
       default: allow
       direction: outgoing
   
   - name: reload ufw
-    community.general.ufw:
+    ufw:
       state: reloaded
 
   - name: enable ufw
-    community.general.ufw:
+    ufw:
       state: enabled
