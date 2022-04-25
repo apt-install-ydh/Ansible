@@ -1,0 +1,21 @@
+- host: "*"
+  become: yes
+  tasks: 
+    - name: apt
+      apt:
+        apt_cache: yes
+        apgrade: 'yes'
+
+    - name: Remove dependencies
+      apt:
+        autoremove: yes
+
+    - name: reboot
+      reboot:
+
+
+- host: "PI-hole01"
+  become: yes
+  tasks:
+    -name: Update Pi-hole
+    
