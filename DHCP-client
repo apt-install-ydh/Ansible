@@ -1,3 +1,0 @@
-#!/bin/bash
-dhclient -r eno1
-dhclient eno1

@@ -1,7 +1,0 @@
-- hosts: "*"
-  become: yes
-  tasks:
-   #install unattended-upgrades program
-   - include_tasks: ./Sub-playbooks/Install-unattended-upgrade.yml
-   #install updates zelf
-   - include_tasks: ./Sub-playbooks/Update-security-updates.yml

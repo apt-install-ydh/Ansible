@@ -1,7 +1,0 @@
-- hosts: "Ubuntu-server"
-  become: yes
-  tasks:
-    - include_tasks: ./Sub-playbooks/Update-server.yml
-    - include_tasks: ./Sub-playbooks/Install-Qemu-agent.yml
-    - include_tasks: ./Sub-playbooks/Install-unattended-upgrade.yml
-    - include_tasks: ./Sub-playbooks/Update-security-updates.yml

@@ -1,0 +1,5 @@
+  - name: autoremove
+    apt:
+      autoremove: yes
+      update_cache: true
+    become: yes

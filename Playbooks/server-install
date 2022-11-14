@@ -1,0 +1,9 @@
+---
+  - name: server install 
+    hosts: test
+    tasks:
+      - include_tasks: ./Sub-playbooks/apt-update.yml
+      - include_tasks: ./Sub-playbooks/apt-upgrade.yml
+      - include_tasks: ./Sub-playbooks/apt-autoremove.yml
+      - include_tasks: ./Sub-playbooks/Install-unattended-upgrade.yml
+      - include_tasks: ./Sub-playbooks/install-nano.yml
