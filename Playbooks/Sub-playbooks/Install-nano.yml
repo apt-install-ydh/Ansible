@@ -1,5 +1,6 @@
   - name: "install nano"
-    apt:
+    ansible.builtin.apt:
       name: "nano"
       state: present
       update_cache: true
+    become: yes
