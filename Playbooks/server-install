@@ -7,3 +7,6 @@
       - include_tasks: ./Sub-playbooks/apt-autoremove.yml
       - include_tasks: ./Sub-playbooks/Install-unattended-upgrade.yml
       - include_tasks: ./Sub-playbooks/install-nano.yml
+      - include_tasks: ./Sub-playbooks/install-net-tools.yml
+      - include_tasks: ./Sub-playbooks/install-Qemu-agent.yml
+      - 
