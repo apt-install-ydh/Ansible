@@ -4,3 +4,7 @@
 [HyperV]
 172.16.2.106
 172.16.2.110
+
+[tailscale]
+ansible01.tail087dd.ts.net
+ansible-test.tail087dd.ts.net
