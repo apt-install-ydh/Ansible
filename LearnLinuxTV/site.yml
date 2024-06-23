@@ -1,0 +1,48 @@
+---
+
+- hosts: PVE
+  become: true
+  tasks: 
+  
+  - name: install updates
+    tags: updates,always,local
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+
+  - name: install apache & PHP package
+    tags: program,local,apache
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+
+  - name: copy defualt html file for site
+    tags: apache
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+- hosts: tailscale
+  become: true
+  tasks: 
+  - name: install mariadb package
+    tags: program,tailscale
+    apt:
+      name: mariadb-server
+      state: latest
+
+- hosts: tailscale
+  become: true
+  tasks:
+  - name : install samba
+    tags: program,test,tailscale
+    package: 
+      name: samba
+      state: latest
