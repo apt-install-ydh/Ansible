@@ -1,0 +1,24 @@
+---
+
+- hosts: new
+  become: true
+  pre_tasks: 
+
+  - name: install updates
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: install standard programms
+    apt:
+      name:
+        - net-tools
+        - qemu-guest-agent
+
+
+  - name: enable & start qemu agent
+    tags: qemu
+    service: 
+      name: qemu-guest-agent
+      state: started
+      enabled: true
