@@ -1,0 +1,58 @@
+---
+
+- hosts: new
+  become: true
+  tasks: 
+
+  - name: install updates
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: install standard programms
+    apt:
+      name:
+        - net-tools
+        
+  - name: install qemu agent
+    apt:
+      name:
+        - qemu-guest-agent
+    when: ansible_virtualization_tech_guest == "Kvm"
+
+  - name: enable & start qemu agent
+    tags: qemu
+    service: 
+      name: qemu-guest-agent
+      state: started
+      enabled: true
+    when: ansible_virtualization_tech_guest == "Kvm"
+
+  - name: show line numbers in nano
+    copy:
+      src: nano-numbers
+      dest: /home/ydh/.nanorc
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: add public keys to ssh file
+    ansible.posix.authorized_key:
+      user: ydh
+      state: present
+      key: '{{ item }}'
+    with_file:
+      - ssh-keys/Ubuntu-Laptop-PVEsrv.pub
+      - ssh-keys/YDH-win11-WSL-PVEsrv.pub
+      - ssh-keys/AcomLaptop2022PVEsrv.pub
+
+  - name: make firewall policy
+    ufw: 
+      rule: allow
+      port: ssh
+      proto: tcp
+  
+  - name: enable ufw
+    ufw:
+      state: enabled
+      policy: allow
