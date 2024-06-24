@@ -12,3 +12,6 @@ ansible-test.tail087dd.ts.net
 [new]
 ansible-test.tail087dd.ts.net
 ansible01.tail087dd.ts.net
+
+[test]
+172.16.3.202

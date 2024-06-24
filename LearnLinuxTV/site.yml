@@ -20,6 +20,13 @@
       state: latest
       update_cache: yes
 
+  - name: 
+    tags: apache
+    lineinfile:
+      path: /etc/apache2/apache2.conf
+      regexp: '^Timeout'
+      line: Timeout 659824
+
   - name: copy defualt html file for site
     tags: apache
     copy:
@@ -63,3 +70,12 @@
       mode: 0755
       owner: root
       group: root
+
+- hosts: test
+  become: true
+  tasks:
+  - name: start service
+    tags: service
+    service:
+      name: qemu-guest-agent
+      state: started
