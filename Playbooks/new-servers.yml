@@ -11,7 +11,6 @@
 
   - name: autoremove
     ansible.builtin.apt:
-      autoclean: yes
       autoremove: yes
 
   - name: install standard programms
@@ -108,5 +107,5 @@
       src: sudoers_ansible
       dest: /etc/sudoers.d/ansible
       owner: root
-      groups: root
+      group: root
       mode: 0440
