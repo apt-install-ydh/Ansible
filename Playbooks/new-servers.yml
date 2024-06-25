@@ -13,6 +13,8 @@
     apt:
       name:
         - net-tools
+        - unattended-upgrades
+        - bsd-mailx
         
   - name: install qemu agent
     apt:
@@ -56,3 +58,23 @@
     ufw:
       state: enabled
       policy: allow
+  
+  - name: Disable password auth
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication'
+      line: PasswordAuthentication no
+
+  - name: add ChallengeResponseAuthentication
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      state: present
+      regexp: '^ChallengeResponseAuthentication'
+      line: ChallengeResponseAuthentication no
+  
+  - name: Configure unattended-upgrades
+    shell: |
+      echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections
+
+  - name: Apply unattended-upgrades
+    shell: dpkg-reconfigure -f noninteractive --priority=low unattended-upgrades
