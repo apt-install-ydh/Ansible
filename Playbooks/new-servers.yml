@@ -9,6 +9,11 @@
       upgrade: dist
       update_cache: yes
 
+  - name: autoremove
+    ansible.builtin.apt:
+      autoclean: yes
+      autoremove: yes
+
   - name: install standard programms
     apt:
       name:
@@ -78,3 +83,11 @@
 
   - name: Apply unattended-upgrades
     shell: dpkg-reconfigure -f noninteractive --priority=low unattended-upgrades
+
+  - name: configure email address
+    lineinfile:
+      path: /etc/apt/apt.conf.d/50unattended-upgrades
+      state: present
+      regexp: '^//Unattended-Upgrade::Mail "";'
+      line: Unattended-Upgrade::Mail "ictadmin@yarondeherdt.be"
+    
