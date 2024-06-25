@@ -79,3 +79,13 @@
     service:
       name: qemu-guest-agent
       state: started
+
+- hosts: tailscale
+  become: true
+  tasks:
+
+  - name: create simone user
+    tags: always
+    user: 
+      name: simone
+      groups: root
