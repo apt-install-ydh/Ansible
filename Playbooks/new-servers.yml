@@ -6,12 +6,8 @@
 
   - name: install updates
     apt:
-      upgrade: dist
       update_cache: yes
-
-  - name: autoremove
-    ansible.builtin.apt:
-      autoremove: yes
+    changed_when: false
 
   - name: install standard programms
     apt:
@@ -90,22 +86,9 @@
       regexp: '^//Unattended-Upgrade::Mail "";'
       line: Unattended-Upgrade::Mail "ictadmin@yarondeherdt.be"
 
-  - name: create Ansible user
-    user: 
-      name: ansible
-      groups: root
-
   - name: add ssh key ansible user
     ansible.builtin.authorized_key:
       user: ansible
       key: '{{ item }}'
     with_file: 
       - ssh-keys/ansible-user.pub
-    
-  - name: add sudoers file for ansible user
-    copy:
-      src: sudoers_ansible
-      dest: /etc/sudoers.d/ansible
-      owner: root
-      group: root
-      mode: 0440
