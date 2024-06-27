@@ -1,8 +1,17 @@
 ---
 
-- hosts: new
+- hosts: PVE
   become: true
   tasks: 
+  
+  - name: Remove apt lock files
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /var/lib/dpkg/lock
+      - /var/lib/dpkg/lock-frontend
+    become: true
 
   - name: install updates
     apt:
