@@ -21,7 +21,10 @@
   - name: add ssh key ansible user
     ansible.builtin.authorized_key:
       user: ansible
-      key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFWi6pGETGRBJR19tyD2koKrv87prvjnVk7KvBGmmABw Ansible User Ubuntu laptop'
+      key: '{{ item }}'
+    with_file:
+      - ssh-keys/ansible-user--Ubuntu-laptop.pub
+      - ssh-keys/ansible-user--Win11-wsl.pub
     
   - name: add sudoers file for ansible user
     copy:

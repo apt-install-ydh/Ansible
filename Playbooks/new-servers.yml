@@ -20,7 +20,6 @@
     apt:
       name:
         - qemu-guest-agent
-    when: ansible_virtualization_tech_guest == "Kvm"
 
   - name: enable & start qemu agent
     tags: qemu
@@ -28,7 +27,6 @@
       name: qemu-guest-agent
       state: started
       enabled: true
-    when: ansible_virtualization_tech_guest == "Kvm"
 
   - name: show line numbers in nano
     copy:
@@ -91,4 +89,5 @@
       user: ansible
       key: '{{ item }}'
     with_file: 
-      - ssh-keys/ansible-user.pub
+      - ssh-keys/ansible-user--Ubuntu-laptop.pub
+      - ssh-keys/ansible-user--Win11-wsl.pub
