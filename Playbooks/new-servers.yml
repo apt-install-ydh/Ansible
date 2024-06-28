@@ -4,7 +4,7 @@
   become: true
   tasks: 
 
-  - name: install updates
+  - name: update repo cache
     apt:
       update_cache: yes
     changed_when: false
