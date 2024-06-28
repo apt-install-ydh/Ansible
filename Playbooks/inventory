@@ -8,3 +8,6 @@
 172.16.3.108
 172.16.3.110
 172.16.3.105
+
+[tailscale]
+ansible01.tail087dd.ts.net

@@ -1,6 +1,6 @@
 ---
 
-- hosts: PVE
+- hosts: tailscale
   become: true
   tasks: 
   
