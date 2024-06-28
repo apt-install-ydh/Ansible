@@ -49,6 +49,11 @@
     ansible.builtin.template:
       src: templates/sshd_config_ref.j2
       dest: /etc/ssh/sshd_config
+
+  - name: delete cloud init
+    ansible.builtin.file:
+      path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+      state: absent  
     
   - name: make firewall policy
     ufw: 
