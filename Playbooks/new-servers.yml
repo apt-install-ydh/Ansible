@@ -14,18 +14,17 @@
       name:
         - net-tools
         - unattended-upgrades
-        - bsd-mailx
         
   - name: install qemu agent
     apt:
       name:
         - qemu-guest-agent
 
-  #- name: enable & start qemu agent
-  #  service: 
-  #    name: qemu-guest-agent
-  #    state: started
-  #    enabled: true
+  - name: enable & start qemu agent
+    service: 
+      name: qemu-guest-agent
+      state: started
+      enabled: true
 
   - name: show line numbers in nano
     copy:
@@ -72,6 +71,11 @@
 
   - name: Apply unattended-upgrades
     shell: dpkg-reconfigure -f noninteractive --priority=low unattended-upgrades
+
+  - name: add config file unattended-upgrades
+    ansible.builtin.template:
+      src: templates/50unattended-upgrades.j2
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
 
   - name: add ssh key ansible user
     ansible.builtin.authorized_key:
