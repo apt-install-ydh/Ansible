@@ -25,6 +25,7 @@
       name: qemu-guest-agent
       state: started
       enabled: true
+    when: ansible_system_vendor == "QEMU"
 
   - name: show line numbers in nano
     copy:
@@ -84,3 +85,7 @@
     with_file: 
       - ssh-keys/ansible-user--Ubuntu-laptop.pub
       - ssh-keys/ansible-user--Win11-wsl.pub
+
+  - name: set time zone Europe/Brussels
+    community.general.timezone:
+      name: Europe/Brussels
