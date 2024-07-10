@@ -1,6 +1,6 @@
 ---
 
-- hosts: tailscale
+- hosts: new
   become: true
   tasks: 
 
@@ -20,12 +20,12 @@
       name:
         - qemu-guest-agent
 
-  - name: enable & start qemu agent
-    service: 
-      name: qemu-guest-agent
-      state: started
-      enabled: true
-    when: ansible_system_vendor == "QEMU"
+  #- name: enable & start qemu agent
+  #  service: 
+  #    name: qemu-guest-agent
+  #    state: started
+  #    enabled: true
+  # when: ansible_system_vendor == "QEMU"
 
   - name: show line numbers in nano
     copy:
