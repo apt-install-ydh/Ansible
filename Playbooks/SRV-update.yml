@@ -1,4 +1,4 @@
-- hosts: tailscale
+- hosts: pve
   become: true
   tasks:
 
