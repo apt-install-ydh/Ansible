@@ -1,4 +1,4 @@
-- hosts: PVE
+- hosts: tailscale
   become: true
   tasks:
 
@@ -6,4 +6,7 @@
     apt: 
       upgrade: dist
       update_cache: yes
-      
+
+  - name: autoremove
+    ansible.builtin.apt:
+      autoremove: yes
