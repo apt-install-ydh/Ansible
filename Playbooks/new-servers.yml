@@ -45,7 +45,7 @@
       - ssh-keys/YDH-win11-WSL-PVEsrv.pub
       - ssh-keys/AcomLaptop2022PVEsrv.pub
   
-  - name: add ssh config file
+  - name: add sshd config file
     ansible.builtin.template:
       src: templates/sshd_config_ref.j2
       dest: /etc/ssh/sshd_config
