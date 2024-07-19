@@ -20,7 +20,7 @@
       state: latest
       update_cache: yes
 
-  - name: 
+  - name:
     tags: apache
     lineinfile:
       path: /etc/apache2/apache2.conf

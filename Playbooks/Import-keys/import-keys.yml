@@ -1,4 +1,4 @@
-- hosts: PVE
+- hosts: new
   become: true
   tasks:
   - name: import ssh keys ydh
