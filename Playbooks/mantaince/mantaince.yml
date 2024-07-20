@@ -25,4 +25,4 @@
   tasks:
   
   - name: remove dangling images (Docker)
-    shell: docker system prune
+    shell: docker system prune -f
