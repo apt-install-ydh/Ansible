@@ -1,0 +1,28 @@
+- hosts: VM-all
+  become: true
+  tasks:
+
+  - name: update repo and packages (apt)
+    apt: 
+      upgrade: dist
+      update_cache: yes
+
+  - name: autoremove
+    ansible.builtin.apt:
+      autoremove: yes
+
+
+- hosts: pi-hole
+  become: true
+  tasks:
+  
+  - name: update (Pi-Hole)
+    shell: pihole -up
+
+
+- hosts: Docker
+  become: true
+  tasks:
+  
+  - name: remove dangling images (Docker)
+    shell: docker system prune
