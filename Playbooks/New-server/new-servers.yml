@@ -60,6 +60,12 @@
       rule: allow
       port: ssh
       proto: tcp
+
+  - name: allow netdata port
+    ufw: 
+      rule: allow
+      port: 19999
+      proto: tcp
   
   - name: enable ufw
     ufw:
