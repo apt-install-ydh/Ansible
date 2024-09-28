@@ -1,0 +1,19 @@
+# install docker engine
+- name: insall ca-certificates curl
+  apt: ca-certificates curl
+
+- name: creates directory with permissions
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: add docker gpg key
+  ansible.builtin.apt.key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    keyring: /etc/apt/keyrings/docker.asc
+
+- name: permissions
+  ansible.builtin.file:
+  path: /etc/apt/keyrings/docker.asc
+  mode: o=r
