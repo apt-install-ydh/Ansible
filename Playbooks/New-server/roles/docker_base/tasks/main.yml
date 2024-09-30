@@ -40,7 +40,7 @@
 
 # post config
 
-- name: add user to docker group
+- name: add user to docker group for root use
   user:
     name: ydh
     group: docker
