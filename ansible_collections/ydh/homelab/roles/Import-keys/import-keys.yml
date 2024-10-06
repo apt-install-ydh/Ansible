@@ -1,0 +1,13 @@
+- hosts: new
+  become: true
+  tasks:
+  - name: import ssh keys ydh
+    ansible.builtin.authorized_key:
+      user: ydh
+      key: '{{ item }}'
+    with_file:
+      - ssh-keys/Ubuntu-Laptop-PVEsrv.pub
+      - ssh-keys/YDH-win11-WSL-PVEsrv.pub
+      - ssh-keys/AcomLaptop2022PVEsrv.pub
+      - ssh-keys/ansible-user--Ubuntu-laptop.pub
+      - ssh-keys/ansible-user--Win11-wsl.pub
