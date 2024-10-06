@@ -1,6 +1,6 @@
 ---
 
-- hosts: new
+- hosts: test
   become: true
   tasks: 
 
@@ -98,7 +98,12 @@
       port: 9090
       proto: tcp 
 
-- hosts: docker_host
+- hosts: docker
   become: true
   roles:
     - docker_base
+
+- hosts: test
+  become: true
+  roles:
+    - back-up

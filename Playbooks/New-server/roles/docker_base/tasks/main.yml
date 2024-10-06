@@ -1,28 +1,32 @@
 # install docker engine
-- name: insall ca-certificates curl
-  apt: ca-certificates curl
+#- name: insall ca-certificates curl
+#  apt: 
+#    name: ca-certificates curl
 
-- name: creates directory with permissions
+- name: Creates directory with permissions
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
 
-- name: add docker gpg key
-  ansible.builtin.apt.key:
+- name: Download docker GPG key
+  get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    keyring: /etc/apt/keyrings/docker.asc
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+
 
 - name: permissions
   ansible.builtin.file:
-  path: /etc/apt/keyrings/docker.asc
-  mode: o=r
+    path: /etc/apt/keyrings/docker.asc
+    mode: o=r
 
 - name: add docker repo
   apt_repository:
-    repo: https://download.docker.com/linux/ubuntu
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
     filename: docker
-    file: /etc/apt/sources.list.d/docker.list
+    mode: '644'
 
 - name: check gpg key
   apt_key:
@@ -38,20 +42,18 @@
       - docker-buildx-plugin
       - docker-compose-plugin
 
-# post config
-
-- name: add user to docker group for root use
+- name: Add user to docker group for root use
   user:
     name: ydh
-    group: docker
+    groups: docker
     append: yes
 
-- name: enbale docker service in systemd
-  ansible.builtin.systemd_service:
+- name: Enable docker service in systemd
+  ansible.builtin.systemd:
     name: docker.service
-    enabled: true
+    enabled: yes
 
-- name: enable container service in systemd
-  ansible.builtin.systemd_service:
+- name: Enable container service in systemd
+  ansible.builtin.systemd:
     name: containerd.service
-    enabled: true
+    enabled: yes
