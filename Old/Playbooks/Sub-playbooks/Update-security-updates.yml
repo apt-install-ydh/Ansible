@@ -1,3 +1,0 @@
-  - name: Check for security updates
-    shell:
-        unattended-upgrade
