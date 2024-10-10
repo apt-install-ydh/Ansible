@@ -1,6 +1,0 @@
-- name: install restic
-  apt:
-    name: restic
-
-- name: update restic
-  shell: restic self-update
