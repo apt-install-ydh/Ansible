@@ -1,0 +1,109 @@
+---
+
+- hosts: test
+  become: true
+  tasks: 
+
+  - name: update repo cache
+    apt:
+      update_cache: yes
+    changed_when: false
+
+  - name: install standard programms
+    apt:
+      name:
+        - net-tools
+        - unattended-upgrades
+        
+  - name: install qemu agent
+    apt:
+      name:
+        - qemu-guest-agent
+
+  - name: show line numbers in nano
+    copy:
+      src: nano-numbers
+      dest: /home/ydh/.nanorc
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: add public keys to ssh file
+    ansible.posix.authorized_key:
+      user: ydh
+      state: present
+      key: '{{ item }}'
+    with_file:
+      - ssh-keys/Ubuntu-Laptop-PVEsrv.pub
+      - ssh-keys/YDH-win11-WSL-PVEsrv.pub
+      - ssh-keys/AcomLaptop2022PVEsrv.pub
+  
+  - name: add sshd config file
+    ansible.builtin.template:
+      src: templates/sshd_config_ref.j2
+      dest: /etc/ssh/sshd_config
+
+  - name: delete cloud init
+    ansible.builtin.file:
+      path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+      state: absent  
+    
+  - name: make firewall policy
+    ufw: 
+      rule: allow
+      port: ssh
+      proto: tcp
+
+  - name: allow netdata port
+    ufw: 
+      rule: allow
+      port: 19999
+      proto: tcp
+  
+  - name: enable ufw
+    ufw:
+      state: enabled
+      policy: allow
+   
+  - name: Configure unattended-upgrades
+    shell: |
+      echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections
+
+  - name: Apply unattended-upgrades
+    shell: dpkg-reconfigure -f noninteractive --priority=low unattended-upgrades
+
+  - name: add config file unattended-upgrades
+    ansible.builtin.template:
+      src: templates/50unattended-upgrades.j2
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+
+  - name: set time zone Europe/Brussels
+    community.general.timezone:
+      name: Europe/Brussels
+
+  - name: install cockpit
+    apt:
+      name:  cockpit
+      state: present
+
+  - name: enable cockpit service
+    service:
+      name: cockpit
+      enabled: yes
+      state: started
+
+  - name: configure ufw for cockpit
+    ufw: 
+      rule: allow
+      port: 9090
+      proto: tcp 
+
+- hosts: docker
+  become: true
+  roles:
+    - docker_base
+
+- hosts: test
+  become: true
+  roles:
+    - back-up
