@@ -1,2 +1,5 @@
----
 # vars file for backup
+---
+github_repo: "cupcakearmy/autorestic"
+out_file: "/usr/local/bin/autorestic"
+restic_package_name: "restic"

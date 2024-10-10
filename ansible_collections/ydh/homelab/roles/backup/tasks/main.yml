@@ -1,9 +1,0 @@
----
-# tasks file for backup
-- name: Install restic
-  apt:
-    name: restic
-
-- name: Update restic
-  shell: 
-    restic self-update

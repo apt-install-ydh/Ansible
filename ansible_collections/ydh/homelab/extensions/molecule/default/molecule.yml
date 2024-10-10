@@ -1,9 +1,0 @@
----
-driver:
-  name: default
-platforms:
-  - name: instance
-    image: quay.io/ansible/ubuntu2004-test-container
-    # you might want to add your own variables here based on what provisioning
-    # you are doing like:
-    # image: quay.io/centos/centos:stream8
