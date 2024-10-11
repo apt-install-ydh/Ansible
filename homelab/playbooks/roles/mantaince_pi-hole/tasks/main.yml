@@ -1,0 +1,5 @@
+- name: update (Pi-Hole)
+  shell: pihole -up
+
+- name: update ads lists
+  shell: pihole -g
