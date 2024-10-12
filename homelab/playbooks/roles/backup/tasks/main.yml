@@ -5,6 +5,7 @@
     name: 
     - restic
     - bzip2
+    - cron
 
 - name: Update restic
   shell: 
@@ -22,3 +23,17 @@
   args: 
     creates: /usr/local/bin/autorestic
   register: restic_download_result
+
+- name: Clone Restic github_repo
+  git: 
+    repo: https://github.com/apt-install-ydh/Restic_backup.git
+    dest: /home/ansible/restic
+    clone: yes
+    update: yes
+
+- name: Cron job
+  cron:
+    name: "Synology restic"
+    user: ansible
+    minute: "*/5"
+    job: "sudo autorestic -c /home/ansible/restic/Synology/.autorestic.yml --ci cron >> /tmp/autorestic.log 2>&1"

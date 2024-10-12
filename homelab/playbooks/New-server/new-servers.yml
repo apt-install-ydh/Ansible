@@ -97,13 +97,3 @@
       rule: allow
       port: 9090
       proto: tcp 
-
-- hosts: docker
-  become: true
-  roles:
-    - docker_base
-
-- hosts: test
-  become: true
-  roles:
-    - back-up
