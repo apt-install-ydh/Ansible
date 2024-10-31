@@ -1,0 +1,7 @@
+Host storagebox
+  Hostname u406620.your-storagebox.de
+  Port 23
+  User u406620-sub2
+  IdentityFile /root/.ssh/storagebox
+  ServerAliveInterval 60
+  ServerAliveCountMax 240
