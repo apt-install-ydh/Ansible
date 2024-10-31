@@ -1,5 +1,5 @@
 ## Home lab maintaince playbook
-- hosts: test
+- hosts: onderhoud
   become: true
   roles:
     - mantaince_base
@@ -9,7 +9,7 @@
   roles:
     - mantaince_docker
 
-- hosts: test
+- hosts: onderhoud
   become: true
   roles:
     - mantaince_pi-hole 
