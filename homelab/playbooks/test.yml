@@ -1,4 +1,4 @@
 - hosts: test
   become: true
   roles:
-    - backup
+    - backup_Syncthing
