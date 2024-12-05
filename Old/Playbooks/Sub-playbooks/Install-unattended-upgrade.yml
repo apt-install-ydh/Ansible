@@ -1,5 +1,0 @@
-  - name: "unattended-upgrade"
-    apt:
-      name: "unattended-upgrades"
-      state: present
-      update_cache: true

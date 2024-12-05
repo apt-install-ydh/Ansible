@@ -1,0 +1,32 @@
+---
+# tasks file for backup_base
+- name: Install restic en co
+  apt:
+    name: 
+    - restic
+    - bzip2
+    - cron
+
+- name: Update restic
+  shell: 
+    restic self-update
+
+- name: Download and execute installation script
+  get_url:
+    url: "https://raw.githubusercontent.com/{{ github_repo }}/master/install.sh"
+    dest: "/tmp/autorestic_install.sh"
+    mode: '0755'
+  register: restic_download_result
+
+- name: Execute installation script
+  command: bash /tmp/autorestic_install.sh
+  args: 
+    creates: /usr/local/bin/autorestic
+  register: restic_download_result
+
+- name: copy ssh file
+  copy:
+    src: ssh_config_root
+    dest: /home/ydh/.ssh/config
+    owner: ydh
+    group: ydh

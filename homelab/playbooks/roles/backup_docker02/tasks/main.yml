@@ -1,0 +1,17 @@
+---
+# tasks file for backup
+- name: add key storagebox
+  copy:
+    src: storagebox_hetzner
+    dest: /home/ydh/.ssh/storagebox
+    mode: '600'
+    owner: ydh
+    group: ydh
+
+- name: copy autorestic_syncthing env file
+  copy:
+    src: autorestic_env
+    dest: /home/ydh/autorestic/.autorestic.env
+    owner: ydh
+    group: ydh
+    mode: 0700

@@ -1,0 +1,2 @@
+- name: remove dangling images (Docker)
+  shell: docker system prune -f

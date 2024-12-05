@@ -1,0 +1,44 @@
+---
+
+- hosts: test
+  become: true
+  tasks: 
+  
+  - name: Remove apt lock files
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /var/lib/dpkg/lock
+      - /var/lib/dpkg/lock-frontend
+    become: true
+
+  - name: install updates
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: autoremove
+    ansible.builtin.apt:
+      autoremove: yes
+
+  - name: create Ansible user
+    user: 
+      name: ansible
+      groups: root
+
+  - name: add ssh key ansible user
+    ansible.builtin.authorized_key:
+      user: ansible
+      key: '{{ item }}'
+    with_file:
+      - ssh-keys/ansible-user--Ubuntu-laptop.pub
+      - ssh-keys/ansible-user--Win11-wsl.pub
+    
+  - name: add sudoers file for ansible user
+    copy:
+      src: sudoers_ansible
+      dest: /etc/sudoers.d/ansible
+      owner: root
+      group: root
+      mode: 0440

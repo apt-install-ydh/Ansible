@@ -1,5 +1,0 @@
-  - name: "apt"
-    apt:
-      name: "net-tools"
-      state: present
-      update_cache: true

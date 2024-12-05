@@ -1,0 +1,24 @@
+---
+# tasks file for docker01
+- name: Cron job
+  cron:
+    name: "Docker01 restic"
+    user: ydh
+    minute: "*/5"
+    job: "autorestic -c /home/ydh/autorestic/.autorestic.yml --ci cron >> /tmp/autorestic.log 2>&1"
+
+- name: add key storagebox
+  copy:
+    src: storagebox_hetzner
+    dest: /home/ydh/.ssh/storagebox
+    mode: '600'
+    owner: ydh
+    group: ydh
+
+- name: copy autorestic env file
+  copy:
+   src: autorestic_env
+   dest: /home/ydh/autorestic/Docker01/.autorestic.env
+   owner: ydh
+   group: ydh
+   mode: 0700
