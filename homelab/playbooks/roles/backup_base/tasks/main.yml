@@ -30,11 +30,3 @@
     dest: /home/ydh/.ssh/config
     owner: ydh
     group: ydh
-
-- name: create folder autorestic
-  ansible.builtin.file:
-    path: /home/ydh/autorestic
-    state: directory
-    owner: ydh
-    group: ydh
-    mode: 0700

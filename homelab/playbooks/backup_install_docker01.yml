@@ -1,0 +1,18 @@
+- hosts: docker01
+  remote_user: ydh
+  tasks:
+    
+  - name: clone autorestic repo
+    ansible.builtin.git:
+      repo: git@github.com:apt-install-ydh/Restic_backup.git
+      dest: /home/ydh/autorestic/
+      single_branch: yes
+      clone: yes
+      version: main
+      key_file: /home/ydh/.ssh/id_ed25519
+
+- hosts: docker01
+  become: true
+  roles:
+  - backup_base
+  - backup_docker01
