@@ -5,7 +5,7 @@
     name: "Docker01 restic"
     user: ydh
     minute: "*/5"
-    job: "autorestic -c /home/ydh/autorestic/.autorestic.yml --ci cron >> /tmp/autorestic.log 2>&1"
+    job: "autorestic -c /home/ydh/autorestic/Docker01/.autorestic.yml --ci cron >> /tmp/autorestic.log 2>&1"
 
 - name: add key storagebox
   copy:

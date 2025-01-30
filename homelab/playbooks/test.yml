@@ -1,4 +1,4 @@
-- hosts: test
+- hosts: docker01
   become: true
   roles:
-    - backup_Syncthing
+    - backup_docker01

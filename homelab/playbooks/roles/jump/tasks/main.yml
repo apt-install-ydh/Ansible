@@ -1,0 +1,162 @@
+  - name: check for stignore
+    stat:
+      path: /home/ydh/.stignore
+    register: check_stignore
+
+  - name: create stignore
+    copy:
+      src: .stignore
+      dest: /home/ydh/.stignore
+      owner: ydh
+      group: ydh
+      mode: 0600
+
+  - name: install systemd timesyncd
+    apt:
+      name: systemd-timesyncd
+      state: present
+
+  - name: start and enable systemd-timesyncd
+    ansible.builtin.systemd:
+      name: systemd-timesyncd
+      state: started
+      enabled: yes
+
+  - name: reload systemd
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+
+  - name: restart systemd-timesyncd
+    ansible.builtin.systemd:
+      name: systemd-timesyncd
+      state: restarted
+
+  - name: whait for service to start (30 sec)
+    ansible.builtin.wait_for:
+      timeout: 30
+
+  - name: install tailscale with script
+    shell:  curl -fsSL https://tailscale.com/install.sh | sh
+
+  - name: Download syncthing repo key
+    ansible.builtin.get_url:
+      url: https://syncthing.net/release-key.gpg
+      dest: /etc/apt/trusted.gpg.d/syncthing.gpg
+      mode: '0644'
+      force: true
+
+  - name: add syncthing repo
+    ansible.builtin.lineinfile:
+      path: /etc/apt/trusted.gpg.d/syncthing.gpg
+      line: "deb https://apt.syncthing.net/ syncthing stable'"
+
+  - name: Remove apt lock files
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /var/lib/dpkg/lock
+      - /var/lib/dpkg/lock-frontend
+
+  - name: install updates
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+  - name: install software (apt)
+    apt:
+      name:
+        - syncthing
+        - cifs-utils
+        - restic
+        - zip
+        - pipx
+
+  - name: create folder github
+    ansible.builtin.file:
+      path: /home/ydh/Github
+      state: directory
+      owner: ydh
+      group: ydh
+      mode: 0700
+
+  - name: Auto Remove
+    ansible.builtin.apt:
+      autoremove: yes
+
+  - name: check ssh keys PVEsrv
+    stat: 
+      path: /home/ydh/.ssh/PVEsrv
+    register: check_PVEsrv
+  
+  - name: gen ssh key PVEsrv
+    community.crypto.openssh_keypair:
+      comment: YDH-pc
+      path: /home/ydh/.ssh/PVEsrv
+      type: ed25519
+    when: not check_PVEsrv.stat.exists
+    # when the file not exists create a key pair
+
+  - name: add ssh client config file
+    ansible.builtin.template:
+      src: templates/ssh-client-conf.j2
+      dest: /home/ydh/.ssh/config
+
+  - name: syncThing create dir
+    file:
+      path: /home/ydh/SyncThing
+      state: directory
+      owner: ydh
+      group: ydh
+      mode: 0700
+
+  - name: start & enable syncthing service
+    command: "{{ item }}"
+    with_items:
+      - systemctl enable syncthing@ydh
+      - systemctl restart syncthing@ydh
+
+  - name: what for syncthing folder (30 sec)
+    ansible.builtin.wait_for:
+      timeout: 30
+
+  - name: remove default sycthing folder
+    file:
+      path: /home/ydh/Sync
+      state: absent
+
+  - name: pull bitwarden
+    get_url:
+      url: https://vault.bitwarden.com/download/?app=cli&platform=linux
+      dest: /tmp/bw.zip
+
+  - name: unzip bitwarden
+    ansible.builtin.unarchive:
+      src: /tmp/bw.zip
+      dest: /usr/local/bin/
+      remote_src: yes
+      owner: ydh
+      group: ydh
+      mode: 0755
+
+  - name: pull CLI 
+    get_url:
+      url: https://github.com/Yakitrak/obsidian-cli/releases/download/v0.1.7/obsidian-cli_0.1.7_linux_amd64.tar.gz
+      dest: /tmp/obsidian-cli_0.1.7_linux_amd64.tar.gz
+
+  - name: unarchive obsidian
+    ansible.builtin.unarchive:
+      src: /tmp/obsidian-cli_0.1.7_linux_amd64.tar.gz
+      dest: /usr/local/bin/
+      remote_src: yes
+      owner: ydh
+      group: ydh
+      mode: 0755
+
+  - name: pipx ensurepath
+    shell: pipx ensurepath
+
+  - name: ansible install
+    community.general.pipx:
+      install_deps: true
+      name: ansible

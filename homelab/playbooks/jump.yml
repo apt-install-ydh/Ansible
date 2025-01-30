@@ -1,0 +1,6 @@
+- hosts: jump
+  become: true
+  roles:
+  - bootstrap
+  - new_server_install
+  - jump
