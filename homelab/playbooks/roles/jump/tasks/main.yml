@@ -1,16 +1,3 @@
-  - name: check for stignore
-    stat:
-      path: /home/ydh/.stignore
-    register: check_stignore
-
-  - name: create stignore
-    copy:
-      src: .stignore
-      dest: /home/ydh/.stignore
-      owner: ydh
-      group: ydh
-      mode: 0600
-
   - name: install systemd timesyncd
     apt:
       name: systemd-timesyncd
@@ -38,18 +25,6 @@
   - name: install tailscale with script
     shell:  curl -fsSL https://tailscale.com/install.sh | sh
 
-  - name: Download syncthing repo key
-    ansible.builtin.get_url:
-      url: https://syncthing.net/release-key.gpg
-      dest: /etc/apt/trusted.gpg.d/syncthing.gpg
-      mode: '0644'
-      force: true
-
-  - name: add syncthing repo
-    ansible.builtin.lineinfile:
-      path: /etc/apt/trusted.gpg.d/syncthing.gpg
-      line: "deb https://apt.syncthing.net/ syncthing stable'"
-
   - name: Remove apt lock files
     file:
       path: "{{ item }}"
@@ -66,7 +41,6 @@
   - name: install software (apt)
     apt:
       name:
-        - syncthing
         - cifs-utils
         - restic
         - zip
@@ -102,57 +76,6 @@
       src: templates/ssh-client-conf.j2
       dest: /home/ydh/.ssh/config
 
-  - name: syncThing create dir
-    file:
-      path: /home/ydh/SyncThing
-      state: directory
-      owner: ydh
-      group: ydh
-      mode: 0700
-
-  - name: start & enable syncthing service
-    command: "{{ item }}"
-    with_items:
-      - systemctl enable syncthing@ydh
-      - systemctl restart syncthing@ydh
-
-  - name: what for syncthing folder (30 sec)
-    ansible.builtin.wait_for:
-      timeout: 30
-
-  - name: remove default sycthing folder
-    file:
-      path: /home/ydh/Sync
-      state: absent
-
-  - name: pull bitwarden
-    get_url:
-      url: https://vault.bitwarden.com/download/?app=cli&platform=linux
-      dest: /tmp/bw.zip
-
-  - name: unzip bitwarden
-    ansible.builtin.unarchive:
-      src: /tmp/bw.zip
-      dest: /usr/local/bin/
-      remote_src: yes
-      owner: ydh
-      group: ydh
-      mode: 0755
-
-  - name: pull CLI 
-    get_url:
-      url: https://github.com/Yakitrak/obsidian-cli/releases/download/v0.1.7/obsidian-cli_0.1.7_linux_amd64.tar.gz
-      dest: /tmp/obsidian-cli_0.1.7_linux_amd64.tar.gz
-
-  - name: unarchive obsidian
-    ansible.builtin.unarchive:
-      src: /tmp/obsidian-cli_0.1.7_linux_amd64.tar.gz
-      dest: /usr/local/bin/
-      remote_src: yes
-      owner: ydh
-      group: ydh
-      mode: 0755
-
   - name: pipx ensurepath
     shell: pipx ensurepath
 
@@ -160,3 +83,5 @@
     community.general.pipx:
       install_deps: true
       name: ansible
+
+

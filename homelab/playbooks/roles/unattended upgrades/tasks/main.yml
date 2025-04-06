@@ -1,0 +1,15 @@
+- name: update repo cache
+    apt:
+      update_cache: yes
+    changed_when: false
+
+- name: install Unattended Upgrades
+  apt: 
+    name: 
+      - unattended-upgrades
+
+- name: enable service
+  service: 
+    name: unattended-upgrades
+    enabled: yes
+    state: started
