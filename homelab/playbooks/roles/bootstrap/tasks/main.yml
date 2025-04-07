@@ -26,8 +26,8 @@
       user: ansible
       key: '{{ item }}'
     with_file:
-      - ssh-keys/ansible-user--Ubuntu-laptop.pub
-      - ssh-keys/ansible-user--Win11-wsl.pub
+      - roles/bootstrap/ssh-keys/ansible-user--Ubuntu-laptop.pub
+      - roles/bootstrap/ssh-keys/ansible-user--Win11-wsl.pub
     
   - name: add public keys to ssh file
     ansible.posix.authorized_key:
@@ -35,8 +35,8 @@
       state: present
       key: '{{ item }}'
     with_file:
-      - ssh-keys/Ubuntu-Laptop-PVEsrv.pub
-      - ssh-keys/YDH-win11-WSL-PVEsrv.pub
+      - roles/bootstrap/ssh-keys/Ubuntu-Laptop-PVEsrv.pub
+      - roles/bootstrap/ssh-keys/YDH-win11-WSL-PVEsrv.pub
     
   - name: add sudoers file for ansible user
     copy:

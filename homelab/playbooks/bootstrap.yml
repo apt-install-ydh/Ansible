@@ -1,9 +1,9 @@
 ---
 
-- hosts: test
+- hosts: new
   become: true
-  tasks: 
-  
+  tasks:
+
   - name: Remove apt lock files
     file:
       path: "{{ item }}"
@@ -23,7 +23,7 @@
       autoremove: yes
 
   - name: create Ansible user
-    user: 
+    user:
       name: ansible
       groups: root
 
@@ -32,12 +32,12 @@
       user: ansible
       key: '{{ item }}'
     with_file:
-      - ssh-keys/ansible-user--Ubuntu-laptop.pub
-      - ssh-keys/ansible-user--Win11-wsl.pub
-    
+      - roles/bootstrap/files/ssh-keys/ansible-user--Ubuntu-laptop.pub
+      - roles/bootstrap/files/ssh-keys/ansible-user--Win11-wsl.pub
+
   - name: add sudoers file for ansible user
     copy:
-      src: sudoers_ansible
+      src: roles/bootstrap/files/sudoers_ansible
       dest: /etc/sudoers.d/ansible
       owner: root
       group: root

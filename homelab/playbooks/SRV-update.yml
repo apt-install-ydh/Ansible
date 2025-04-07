@@ -1,4 +1,4 @@
-- hosts: pve
+- hosts: new
   become: true
   tasks:
 
