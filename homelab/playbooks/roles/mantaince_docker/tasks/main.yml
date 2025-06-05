@@ -1,2 +1,6 @@
-- name: remove dangling images (Docker)
-  shell: docker system prune -f
+- name: Prune everything (Docker)
+  community.docker.docker_prune:
+    containers: true
+    images: true
+    networks: true
+    builder_cache: true

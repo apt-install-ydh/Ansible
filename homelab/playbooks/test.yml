@@ -1,4 +1,4 @@
-- hosts: docker01
+- hosts: new
   become: true
   roles:
-    - backup_docker01
+    - docker_base
