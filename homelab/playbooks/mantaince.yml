@@ -1,15 +1,15 @@
 ## Home lab maintaince playbook
-- hosts: onderhoud
+- hosts: ubuntu_vm
   become: true
   roles:
-    - mantaince_base
+  - mantaince_base
 
-- hosts: test
-  become: true
-  roles:
-    - mantaince_docker
+# - hosts: docker
+#   become: true
+#   roles:
+#     - mantaince_docker
 
-- hosts: onderhoud
-  become: true
-  roles:
-    - mantaince_pi-hole 
+# - hosts: pi_hole
+#   become: true
+#   roles:
+#     - mantaince_pi-hole 

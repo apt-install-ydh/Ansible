@@ -1,0 +1,4 @@
+- hosts: new
+  become: true
+  roles:
+  - new_server_install

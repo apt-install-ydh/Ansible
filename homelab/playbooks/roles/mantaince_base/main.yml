@@ -1,8 +1,0 @@
-- name: update repo and packages (apt)
-  apt: 
-    upgrade: dist
-    update_cache: yes
-
-- name: autoremove
-  ansible.builtin.apt:
-    autoremove: yes
