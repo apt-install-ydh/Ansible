@@ -1,0 +1,15 @@
+- hosts: test
+  become: true
+  roles:
+  - new_server_install
+
+- hosts: backup_backend
+  become: false
+  gather_facts: false
+  roles:
+    - know_hosts
+
+- hosts: test
+  become: true
+  roles: 
+  - backupServerInstall

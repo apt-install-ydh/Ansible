@@ -1,0 +1,93 @@
+  - name: install sshfs
+    apt:
+      name: 
+        - sshfs
+  
+  - name: create restic user
+    ansible.builtin.user:
+      name: restic
+      shell: /bin/bash
+      system: true
+
+  - name: create restic folder
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      owner: restic
+      group: restic
+    loop:
+      - /home/restic/bin
+      - /home/restic/.ssh
+      - /home/restic/restic_snapshot
+
+  - name: download restic
+    ansible.builtin.get_url:
+      url: https://github.com/restic/restic/releases/download/v0.18.0/restic_0.18.0_linux_amd64.bz2
+      dest: /tmp/
+
+  - name: unpack archive
+    shell:
+      bzip2 -dk /tmp/restic_0.18.0_linux_amd64.bz2
+
+  - name: copy restic bin
+    ansible.builtin.copy:
+      src: /tmp/restic_0.18.0_linux_amd64
+      dest: /home/restic/bin/restic
+  
+  - name: delete file
+    ansible.builtin.file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+      - /tmp/restic_0.18.0_linux_amd64
+
+  - name: Change permissions restic binary
+    ansible.builtin.file:
+      path: /home/restic/bin/restic
+      mode: 0750
+      owner: root
+      group: restic
+
+  - name: copy restic files
+    copy:
+      src: "{{ item }}"
+      dest: /home/restic
+      owner: root
+      group: restic
+    loop:
+      - hetznerImmichRepoPasswordFile
+      - trueNasImmichRepoPasswordFile
+
+  - name: copy keys & config
+    copy:
+      src: "{{ item }}"
+      dest: /home/restic/.ssh
+      owner: restic
+      group: restic
+      mode: 0600
+    loop:
+      - service_Backup02
+      - config
+      - storageboxImmich
+
+  - name: delete know host file
+    ansible.builtin.file:
+      path: /home/restic/.ssh/known_hosts
+      state: absent
+
+  - name: copy know_hosts file
+    ansible.builtin.copy:
+      src: /home/ansible/.ssh/known_hosts
+      remote_src: true
+      dest: /home/restic/.ssh/known_hosts
+      owner: restic
+      group: restic
+      mode: 0600
+  
+  # - name: pull github repo
+  #   git:
+  #     repo: git@github.com:apt-install-ydh/Restic_backup.git
+  #     dest: /home/restic/backup
+  #     single_branch: yes
+  #     version: main
+  #     ssh_opts: -o StrictHostKeyChecking=accept-new
