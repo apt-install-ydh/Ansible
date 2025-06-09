@@ -82,12 +82,4 @@
       dest: /home/restic/.ssh/known_hosts
       owner: restic
       group: restic
-      mode: 0600
-  
-  # - name: pull github repo
-  #   git:
-  #     repo: git@github.com:apt-install-ydh/Restic_backup.git
-  #     dest: /home/restic/backup
-  #     single_branch: yes
-  #     version: main
-  #     ssh_opts: -o StrictHostKeyChecking=accept-new
+      mode: 0600 

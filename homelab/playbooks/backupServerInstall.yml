@@ -13,3 +13,15 @@
   become: true
   roles: 
   - backupServerInstall
+
+- hosts: test
+  become: false
+  tasks:
+  - name: pull github repo
+    git:
+      repo: git@github.com:apt-install-ydh/Restic_backup.git
+      dest: /tmp/backup
+      single_branch: yes
+      version: main
+      accept_hostkey: true
+  
