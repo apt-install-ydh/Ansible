@@ -1,7 +1,10 @@
-  - name: install sshfs
+  - name: install sshfs, bzip and cron
     apt:
       name: 
         - sshfs
+        - bzip2
+        - cron
+
   
   - name: create restic user
     ansible.builtin.user:
@@ -55,8 +58,8 @@
       owner: root
       group: restic
     loop:
-      - hetznerImmichRepoPasswordFile
-      - trueNasImmichRepoPasswordFile
+      - hetznerImmichRepoPasswordFile.secret
+      - trueNasImmichRepoPasswordFile.secret
 
   - name: copy keys & config
     copy:
@@ -69,6 +72,7 @@
       - service_Backup02
       - config
       - storageboxImmich
+      - test-keys
 
   - name: delete know host file
     ansible.builtin.file:
@@ -83,3 +87,12 @@
       owner: restic
       group: restic
       mode: 0600 
+
+  - name: cron job
+    cron: 
+      name: "restic Immich back update"
+      user: restic
+      minute: "0"
+      hour: "2"
+      job: "/home/restic/backup/backupServer/Immich_backup"
+      state: present

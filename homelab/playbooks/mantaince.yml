@@ -4,12 +4,12 @@
   roles:
   - mantaince_base
 
-# - hosts: docker
-#   become: true
-#   roles:
-#     - mantaince_docker
+- hosts: docker
+  become: true
+  roles:
+    - mantaince_docker
 
-# - hosts: pi_hole
-#   become: true
-#   roles:
-#     - mantaince_pi-hole 
+- hosts: pi_hole
+  become: true
+  roles:
+   - mantaince_pi-hole 

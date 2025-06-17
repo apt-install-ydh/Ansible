@@ -1,5 +1,5 @@
 - name: Setup Known Hosts With Port
-  delegate_to: 172.16.3.5
+  delegate_to: 172.16.3.105
   known_hosts:
       key: "{{ lookup('pipe', 'ssh-keyscan -trsa -p ' + lookup('config', 'DEFAULT_REMOTE_PORT') | string + ' ' + inventory_hostname) }}"
       name: "{{ inventory_hostname }}"
@@ -7,7 +7,7 @@
   when: lookup('config', 'DEFAULT_REMOTE_PORT') | string != "None"
 
 - name: Setup Known Hosts Without Port
-  delegate_to: 172.16.3.5
+  delegate_to: 172.16.3.105
   known_hosts:
       key: "{{ lookup('pipe', 'ssh-keyscan -trsa ' + inventory_hostname) }}"
       name: "{{ inventory_hostname }}"

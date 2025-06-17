@@ -1,4 +1,4 @@
-- hosts: test
+- hosts: backup_server
   become: true
   roles:
   - new_server_install
@@ -9,12 +9,18 @@
   roles:
     - know_hosts
 
-- hosts: test
+- hosts: backup_targets
+  become: false
+  gather_facts: false
+  roles:
+    - know_hosts
+
+- hosts: backup_server
   become: true
   roles: 
   - backupServerInstall
 
-- hosts: test
+- hosts: backup_server
   become: false
   tasks:
   - name: pull github repo
@@ -24,4 +30,15 @@
       single_branch: yes
       version: main
       accept_hostkey: true
-  
+
+- hosts: backup_server
+  become: true
+  tasks:
+
+  - name: copy repo
+    copy:
+      src: /tmp/backup/
+      remote_src: true
+      dest: /home/restic/backup/
+      owner: restic
+      group: restic
