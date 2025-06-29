@@ -1,0 +1,11 @@
+- name: check file & add record
+  ansible.builtin.replace:
+    path: /tmp/testFile
+    regexp: '172.16.2.110'
+    replace: NAS02    IN     A    172.16.2.110
+
+# - name: add record
+#   ansible.builtin.lineinfile:
+#     path: /tmp/testFile
+#     replace: NAS02    IN     A    172.16.2.110
+#     state: present

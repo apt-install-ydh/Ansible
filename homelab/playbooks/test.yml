@@ -1,4 +1,4 @@
-- hosts: new
+- hosts: test
   become: true
   roles:
-    - docker_base
+    - autoDNS

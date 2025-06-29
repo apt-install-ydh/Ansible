@@ -1,4 +1,4 @@
-- hosts: new
+- hosts: ubuntu_vm
   become: true
   roles:
-  - new_server_install
+    - new_server_install
