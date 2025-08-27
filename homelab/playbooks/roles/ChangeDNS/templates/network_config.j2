@@ -1,0 +1,13 @@
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    ens18:
+      addresses:
+      - {{ ServerIP }}
+      gateway4: {{ ServerGateway }}
+      nameservers:
+        addresses:
+        - {{ ServerDNS }}
+        search: []
+  version: 2
+

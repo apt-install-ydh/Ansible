@@ -1,0 +1,4 @@
+- name: jina file
+  ansible.builtin.template:
+    src: 
+    dest:
